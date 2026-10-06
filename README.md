@@ -1,1 +1,1 @@
-# 24hChats
+# Chats24h
