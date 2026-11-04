@@ -16,6 +16,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 builder.Services.AddRazorPages();
 
 builder.Services.AddSignalR();
+builder.Services.AddHostedService<Chats24h.Services.RoomCleanupService>();
 
 var app = builder.Build();
 
@@ -36,6 +37,8 @@ app.UseHttpsRedirection();
 app.UseRouting();
 
 app.UseAuthorization();
+
+app.UseWebSockets();
 
 app.MapStaticAssets();
 app.MapHub<ChatHub>("/chatHub");
