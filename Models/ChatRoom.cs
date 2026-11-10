@@ -8,6 +8,8 @@ public class ChatRoom
 
     [Required, MaxLength(80)]
     public string Name { get; set; } = "";
+    [MaxLength(160)]
+    public string Description { get; set; } = "";
 
     public DateTimeOffset CreatedAt { get; set; }
 

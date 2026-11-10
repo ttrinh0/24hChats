@@ -1,8 +1,9 @@
 ﻿@using Chats24h
 @using Chats24h.Data
+@using Chats24h.Models
 @using Microsoft.AspNetCore.Identity
-@inject SignInManager<IdentityUser> SignInManager
-@inject UserManager<IdentityUser> UserManager
+@inject SignInManager<ChatUser> SignInManager
+@inject UserManager<ChatUser> UserManager
 
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))

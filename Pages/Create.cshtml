@@ -1,0 +1,30 @@
+﻿@page
+@model CreateModel
+@{
+    ViewData["Title"] = "Create a Room";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<form method="post" class="mb-4">
+    <div>
+    <label asp-for="RoomName" class="form-label">Room name</label>
+        <input asp-for="RoomName"
+               class="form-control"
+               maxlength="80"
+               placeholder="Enter the Room's Name" />
+    </div>
+    <div class="my-4">
+    <label asp-for="RoomDesc" class="form-label">Room Description</label>
+        <input asp-for="RoomDesc"
+               class="form-control"
+               maxlength="160"
+               placeholder="Enter the Room's Description" />
+    </div>
+        <button type="submit" class="btn btn-primary">
+            Create room
+        </button>
+    
+
+    <span asp-validation-for="RoomName" class="text-danger"></span>
+</form>

@@ -5,9 +5,10 @@ using Microsoft.EntityFrameworkCore;
 namespace Chats24h.Data;
 
 public class ApplicationDbContext(
-    DbContextOptions<ApplicationDbContext> options) : IdentityDbContext(options)
+    DbContextOptions<ApplicationDbContext> options) : IdentityDbContext<ChatUser>(options)
 {
     public DbSet<ChatRoom> ChatRooms => Set<ChatRoom>(); // property get only
+    public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -15,5 +16,17 @@ public class ApplicationDbContext(
 
         builder.Entity<ChatRoom>()
             .HasIndex(room => room.ExpiresAt);
+
+        builder.Entity<ChatMessage>()
+        .HasOne(m => m.ChatRoom)
+        .WithMany()
+        .HasForeignKey(m => m.RoomId)
+        .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<ChatMessage>()
+        .HasOne(m => m.User)
+        .WithMany()
+        .HasForeignKey(m => m.UserId)
+        .OnDelete(DeleteBehavior.Restrict);
     }
 }
