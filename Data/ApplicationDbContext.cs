@@ -9,6 +9,7 @@ public class ApplicationDbContext(
 {
     public DbSet<ChatRoom> ChatRooms => Set<ChatRoom>(); // property get only
     public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
+    public DbSet<ChatUser> ChatUsers => Set<ChatUser>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

@@ -1,4 +1,5 @@
 using Chats24h.Data;
+using Chats24h.Models;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 
@@ -29,8 +30,15 @@ public class ChatHub(ApplicationDbContext db) : Hub
         Context.Items[RoomKey] = roomId;
     }
 
-    public async Task SendMessage(string nickname, string message)
+    public async Task SendMessage(string chatUserId, string message)
     {
+        var chatUser = await db.ChatUsers.FindAsync(chatUserId);
+        if (chatUser == null)
+        {
+            return;
+        }
+        string nickname = chatUser.Nickname;
+
         if (!Context.Items.TryGetValue(RoomKey, out var value)
             || value is not Guid roomId)
         {
@@ -49,6 +57,14 @@ public class ChatHub(ApplicationDbContext db) : Hub
         {
             throw new HubException("Messages must contain 1–2000 characters.");
         }
+
+        await db.ChatMessages.AddAsync(new ChatMessage()
+        {
+            RoomId = roomId,
+            UserId = chatUserId,
+            Message = message
+        });
+        await db.SaveChangesAsync();
 
         await RequireActiveRoomAsync(roomId);
 

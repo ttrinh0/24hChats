@@ -15,9 +15,14 @@
 
     <p id="connectionStatus" role="status">Connecting…</p>
 
-    <input id="userInput" value="@Model.Nickname" type="hidden" />
+    <input id="userInput" value="@Model.ChatUserId" type="hidden" />
 
-    <ul id="messagesList" class="list-unstyled" aria-live="polite"></ul>
+    <ul id="messagesList" class="list-unstyled" aria-live="polite">
+        @foreach (var message in Model.Messages)
+        {
+            <p>@message.User.Nickname: @message.Message</p>
+        }
+    </ul>
 
     <form id="messageForm" class="d-flex gap-2">
         <label for="messageInput" class="visually-hidden">Message</label>

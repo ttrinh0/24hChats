@@ -12,7 +12,8 @@ namespace Chats24h.Pages;
 public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManager) : PageModel
 {
     public ChatRoom Room { get; private set; } = null!;
-    public string Nickname { get; private set; } = null!;
+    public string ChatUserId { get; private set; } = null!;
+    public List<ChatMessage> Messages { get; private set; } = [];
     private readonly UserManager<ChatUser> _userManager = userManager;
 
     public async Task<IActionResult> OnGetAsync(Guid? roomId)
@@ -35,6 +36,8 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
             return NotFound("This room does not exist or has expired.");
         }
 
+        var messages = await db.ChatMessages.Include(c => c.User).Where(c => c.RoomId == roomId).ToListAsync();
+
         var user = await _userManager.GetUserAsync(User);
 
         if (user == null)
@@ -43,7 +46,8 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
         }
 
         Room = room;
-        Nickname = user.Nickname;
+        ChatUserId = user.Id;
+        Messages = messages;
         return Page();
     }
 }
