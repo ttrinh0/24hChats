@@ -17,6 +17,12 @@ public class ApplicationDbContext(
         builder.Entity<ChatRoom>()
             .HasIndex(room => room.ExpiresAt);
 
+        builder.Entity<ChatRoom>()
+            .HasOne(m => m.Owner)
+            .WithMany()
+            .HasForeignKey(c => c.OwnerId)
+            .OnDelete(DeleteBehavior.Cascade);
+
         builder.Entity<ChatMessage>()
         .HasOne(m => m.ChatRoom)
         .WithMany()

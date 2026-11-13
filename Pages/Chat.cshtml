@@ -7,33 +7,24 @@
 <a asp-page="/Index">All rooms</a>
 
 <h1>@Model.Room.Name</h1>
+<p>This room belongs to @Model.Room.Owner.Nickname</p>
 <p>@Model.Room.Description</p>
 @* <p>Choose a nickname to chat.</p> *@
 
-<div id="chat"
-     data-room-id="@Model.Room.Id"
-     data-expires-at="@Model.Room.ExpiresAt.ToString("O")">
+<div id="chat" data-room-id="@Model.Room.Id" data-expires-at="@Model.Room.ExpiresAt.ToString("O")">
 
     <p id="connectionStatus" role="status">Connecting…</p>
 
-    <input id="userInput" value="@Model.Nickname" type="hidden"/>
+    <input id="userInput" value="@Model.Nickname" type="hidden" />
 
-    <ul id="messagesList"
-        class="list-unstyled"
-        aria-live="polite"></ul>
+    <ul id="messagesList" class="list-unstyled" aria-live="polite"></ul>
 
     <form id="messageForm" class="d-flex gap-2">
         <label for="messageInput" class="visually-hidden">Message</label>
-        <input id="messageInput"
-               class="form-control"
-               maxlength="2000"
-               autocomplete="off"
+        <input id="messageInput" class="form-control" maxlength="2000" autocomplete="off"
                placeholder="Write a message…" />
 
-        <button id="sendButton"
-                type="submit"
-                class="btn btn-primary"
-                disabled>
+        <button id="sendButton" type="submit" class="btn btn-primary" disabled>
             Send
         </button>
     </form>

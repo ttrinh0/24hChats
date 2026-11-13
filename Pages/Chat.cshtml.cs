@@ -1,5 +1,6 @@
 ﻿using Chats24h.Data;
 using Chats24h.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Chats24h.Pages;
 
+[Authorize]
 public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManager) : PageModel
 {
     public ChatRoom Room { get; private set; } = null!;
@@ -23,6 +25,7 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
         var now = DateTimeOffset.UtcNow;
 
         var room = await db.ChatRooms
+            .Include(c => c.Owner)
             .AsNoTracking()
             .SingleOrDefaultAsync(room =>
                 room.Id == roomId.Value &&

@@ -2,6 +2,7 @@ using System.ComponentModel.DataAnnotations;
 using Chats24h.Data;
 using Chats24h.Models;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
@@ -9,7 +10,7 @@ using Microsoft.EntityFrameworkCore;
 namespace Chats24h.Pages;
 
 [Authorize]
-public class CreateModel(ApplicationDbContext db) : PageModel
+public class CreateModel(ApplicationDbContext db, UserManager<ChatUser> userManager) : PageModel
 {
     public List<ChatRoom> Rooms { get; private set; } = [];
 
@@ -20,6 +21,7 @@ public class CreateModel(ApplicationDbContext db) : PageModel
     [BindProperty]
     [StringLength(160)]
     public string RoomDesc { get; set; } = "";
+    private readonly UserManager<ChatUser> _userManager = userManager;
 
     public async Task OnGetAsync() // 'Task' type is somewhat like Promise in .js
     {
@@ -30,6 +32,12 @@ public class CreateModel(ApplicationDbContext db) : PageModel
     {
         RoomName = RoomName?.Trim() ?? "";
         RoomDesc = RoomDesc?.Trim() ?? "";
+        var currentUser = await _userManager.GetUserAsync(User);
+
+        if (currentUser == null)
+        {
+            NotFound();
+        }
 
         if (string.IsNullOrWhiteSpace(RoomName))
         {
@@ -49,6 +57,7 @@ public class CreateModel(ApplicationDbContext db) : PageModel
         {
             Name = RoomName,
             Description = RoomDesc,
+            OwnerId = currentUser.Id,
             CreatedAt = now,
             ExpiresAt = now.AddHours(24)
         };

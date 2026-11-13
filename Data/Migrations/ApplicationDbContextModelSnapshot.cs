@@ -17,7 +17,7 @@ namespace Chats24h.Data.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "10.0.12")
+                .HasAnnotation("ProductVersion", "10.0.14")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
@@ -73,9 +73,15 @@ namespace Chats24h.Data.Migrations
                         .HasMaxLength(80)
                         .HasColumnType("nvarchar(80)");
 
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("Id");
 
                     b.HasIndex("ExpiresAt");
+
+                    b.HasIndex("OwnerId");
 
                     b.ToTable("ChatRooms");
                 });
@@ -303,6 +309,17 @@ namespace Chats24h.Data.Migrations
                     b.Navigation("ChatRoom");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("Chats24h.Models.ChatRoom", b =>
+                {
+                    b.HasOne("Chats24h.Models.ChatUser", "Owner")
+                        .WithMany()
+                        .HasForeignKey("OwnerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Owner");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
