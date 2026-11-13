@@ -39,11 +39,11 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
 
         if (user == null)
         {
-            Forbid();
+            return Forbid();
         }
 
         Room = room;
-        Nickname = user?.Nickname ?? "Default";
+        Nickname = user.Nickname;
         return Page();
     }
 }

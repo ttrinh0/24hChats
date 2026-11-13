@@ -36,7 +36,7 @@ public class CreateModel(ApplicationDbContext db, UserManager<ChatUser> userMana
 
         if (currentUser == null)
         {
-            NotFound();
+            return NotFound();
         }
 
         if (string.IsNullOrWhiteSpace(RoomName))
