@@ -9,6 +9,7 @@ const sendButton = document.getElementById("sendButton");
 const nicknameInput = document.getElementById("userInput");
 const messageInput = document.getElementById("messageInput");
 const messages = document.getElementById("messagesList");
+const messageBox = document.getElementById("message-box");
 
 let expired = false;
 let joined = false;
@@ -122,6 +123,7 @@ document
 
       status.textContent = "Connected";
       messageInput.focus();
+      messageBox.scrollTop = messageBox.scrollHeight - messageBox.clientHeight;
     } catch (error) {
       status.textContent = error.message;
     } finally {

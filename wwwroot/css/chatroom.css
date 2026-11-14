@@ -2,7 +2,7 @@
 }
 
 #message-box {
-  overflow: scroll;
+  overflow: auto;
   scrollbar-width: none;
   overflow-x: hidden;
   height: 60vh;
