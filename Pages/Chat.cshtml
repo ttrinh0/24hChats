@@ -6,7 +6,8 @@
 }
 
 <main id="chatroom" class="d-flex justify-content-between border">
-    <div class="flex-fill">
+    @* left box *@
+    <div id="" class="flex-grow-1">
         <div id="chat" data-room-id="@Model.Room.Id" data-expires-at="@Model.Room.ExpiresAt.ToString("O")"
              class="d-flex align-self-end">
             <input id="userInput" value="@Model.ChatUserId" type="hidden" />
@@ -36,7 +37,9 @@
             </div>
         </section>
     </div>
-    <aside id="users" class="p-4 flex-fill">
+
+    @* User box *@
+    <aside id="users" class="p-4">
         <h3>Users</h3>
         @foreach (var member in Model.Room.ChatMembers)
         {

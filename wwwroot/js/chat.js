@@ -33,6 +33,7 @@ connection.on("ReceiveMessage", (nickname, message) => {
   // Treat messages as text, never as HTML.
   item.textContent = `${nickname}: ${message}`;
   messages.appendChild(item);
+  messageBox.scrollTop = messageBox.scrollHeight - messageBox.clientHeight;
 });
 
 async function joinRoom() {
@@ -123,7 +124,6 @@ document
 
       status.textContent = "Connected";
       messageInput.focus();
-      messageBox.scrollTop = messageBox.scrollHeight - messageBox.clientHeight;
     } catch (error) {
       status.textContent = error.message;
     } finally {
