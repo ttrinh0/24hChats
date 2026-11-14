@@ -1,0 +1,26 @@
+#chatroom {
+}
+
+#message-box {
+  overflow: scroll;
+  scrollbar-width: none;
+  overflow-x: hidden;
+  height: 60vh;
+  border-bottom-right-radius: 10px;
+}
+
+#main-chatbox {
+  border-radius: 10px;
+}
+
+#action-bar {
+  position: sticky;
+  bottom: 0;
+  background-color: var(--chat-background);
+  border-radius: 0px 0px 10px 10px;
+}
+
+#users {
+  background-color: var(--chat-background);
+  border-radius: 10px;
+}
