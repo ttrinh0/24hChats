@@ -11,29 +11,39 @@
 <p>@Model.Room.Description</p>
 @* <p>Choose a nickname to chat.</p> *@
 
-<div id="chat" data-room-id="@Model.Room.Id" data-expires-at="@Model.Room.ExpiresAt.ToString("O")">
+<section>
 
-    <p id="connectionStatus" role="status">Connecting…</p>
+    <div id="chat" data-room-id="@Model.Room.Id" data-expires-at="@Model.Room.ExpiresAt.ToString("O")">
 
-    <input id="userInput" value="@Model.ChatUserId" type="hidden" />
+        <p id="connectionStatus" role="status">Connecting…</p>
 
-    <ul id="messagesList" class="list-unstyled" aria-live="polite">
-        @foreach (var message in Model.Messages)
+        <input id="userInput" value="@Model.ChatUserId" type="hidden" />
+
+        <ul id="messagesList" class="list-unstyled" aria-live="polite">
+            @foreach (var message in Model.Messages)
+            {
+                <p>@message.User.Nickname: @message.Message</p>
+            }
+        </ul>
+
+        <form id="messageForm" class="d-flex gap-2">
+            <label for="messageInput" class="visually-hidden">Message</label>
+            <input id="messageInput" class="form-control" maxlength="2000" autocomplete="off"
+                   placeholder="Write a message…" />
+
+            <button id="sendButton" type="submit" class="btn btn-primary" disabled>
+                Send
+            </button>
+        </form>
+    </div>
+    <div>
+        @foreach (var member in Model.Room.ChatMembers)
         {
-            <p>@message.User.Nickname: @message.Message</p>
+            <p>@member.ChatUser.Nickname</p>
         }
-    </ul>
-
-    <form id="messageForm" class="d-flex gap-2">
-        <label for="messageInput" class="visually-hidden">Message</label>
-        <input id="messageInput" class="form-control" maxlength="2000" autocomplete="off"
-               placeholder="Write a message…" />
-
-        <button id="sendButton" type="submit" class="btn btn-primary" disabled>
-            Send
-        </button>
-    </form>
-</div>
+    </div>
+    
+</section>
 
 @section Scripts {
     <script src="~/js/signalr/dist/browser/signalr.js"></script>

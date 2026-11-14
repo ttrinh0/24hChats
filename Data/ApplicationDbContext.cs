@@ -10,6 +10,7 @@ public class ApplicationDbContext(
     public DbSet<ChatRoom> ChatRooms => Set<ChatRoom>(); // property get only
     public DbSet<ChatMessage> ChatMessages => Set<ChatMessage>();
     public DbSet<ChatUser> ChatUsers => Set<ChatUser>();
+    public DbSet<ChatMember> ChatMembers => Set<ChatMember>();
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -23,6 +24,26 @@ public class ApplicationDbContext(
             .WithMany()
             .HasForeignKey(c => c.OwnerId)
             .OnDelete(DeleteBehavior.Cascade);
+
+        builder.Entity<ChatMember>()
+        .HasKey(m => new
+        {
+            m.UserId,
+            m.RoomId
+        });
+
+        builder.Entity<ChatMember>()
+            .HasOne(m => m.ChatUser)
+            .WithMany()
+            .HasForeignKey(m => m.UserId)
+            .OnDelete(DeleteBehavior.Restrict);
+
+        builder.Entity<ChatMember>()
+            .HasOne(m => m.ChatRoom)
+            .WithMany(r => r.ChatMembers)
+            .HasForeignKey(m => m.RoomId)
+            .OnDelete(DeleteBehavior.Cascade);
+
 
         builder.Entity<ChatMessage>()
         .HasOne(m => m.ChatRoom)

@@ -27,6 +27,8 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
 
         var room = await db.ChatRooms
             .Include(c => c.Owner)
+            .Include(c => c.ChatMembers)
+            .ThenInclude(m => m.ChatUser)
             .AsNoTracking()
             .SingleOrDefaultAsync(room =>
                 room.Id == roomId.Value &&
@@ -44,7 +46,6 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
         {
             return Forbid();
         }
-
         Room = room;
         ChatUserId = user.Id;
         Messages = messages;

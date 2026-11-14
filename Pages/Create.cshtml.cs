@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Chats24h.Pages;
 
@@ -61,9 +62,19 @@ public class CreateModel(ApplicationDbContext db, UserManager<ChatUser> userMana
             CreatedAt = now,
             ExpiresAt = now.AddHours(24)
         };
+        var chatMember = new ChatMember
+        {
+            UserId = currentUser.Id,
+            RoomId = room.Id,
+        };
+        room.ChatMembers.Add(chatMember);
+        if (ModelState.IsValid)
+        {
 
-        db.ChatRooms.Add(room);
-        await db.SaveChangesAsync();
+            await db.ChatRooms.AddAsync(room);
+            await db.ChatMembers.AddAsync(chatMember);
+            await db.SaveChangesAsync();
+        }
 
         return RedirectToPage("/Chat", new { roomId = room.Id });
     }

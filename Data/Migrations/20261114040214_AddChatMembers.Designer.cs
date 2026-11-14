@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chats24h.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261113081935_AddChatUserDbSet")]
-    partial class AddChatUserDbSet
+    [Migration("20261114040214_AddChatMembers")]
+    partial class AddChatMembers
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -24,6 +24,24 @@ namespace Chats24h.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("Chats24h.Models.ChatMember", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<Guid>("RoomId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTimeOffset>("JoinedAt")
+                        .HasColumnType("datetimeoffset");
+
+                    b.HasKey("UserId", "RoomId");
+
+                    b.HasIndex("RoomId");
+
+                    b.ToTable("ChatMembers");
+                });
 
             modelBuilder.Entity("Chats24h.Models.ChatMessage", b =>
                 {
@@ -295,6 +313,25 @@ namespace Chats24h.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Chats24h.Models.ChatMember", b =>
+                {
+                    b.HasOne("Chats24h.Models.ChatRoom", "ChatRoom")
+                        .WithMany("ChatMembers")
+                        .HasForeignKey("RoomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Chats24h.Models.ChatUser", "ChatUser")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ChatRoom");
+
+                    b.Navigation("ChatUser");
+                });
+
             modelBuilder.Entity("Chats24h.Models.ChatMessage", b =>
                 {
                     b.HasOne("Chats24h.Models.ChatRoom", "ChatRoom")
@@ -374,6 +411,11 @@ namespace Chats24h.Data.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Chats24h.Models.ChatRoom", b =>
+                {
+                    b.Navigation("ChatMembers");
                 });
 #pragma warning restore 612, 618
         }

@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Chats24h.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class InitialCreate : Migration
+    public partial class AddChatMembers : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -49,21 +49,6 @@ namespace Chats24h.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "ChatRooms",
-                columns: table => new
-                {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
-                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    ExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ChatRooms", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -173,6 +158,53 @@ namespace Chats24h.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ChatRooms",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
+                    OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
+                    ExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatRooms", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_ChatRooms_AspNetUsers_OwnerId",
+                        column: x => x.OwnerId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "ChatMembers",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RoomId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    JoinedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ChatMembers", x => new { x.UserId, x.RoomId });
+                    table.ForeignKey(
+                        name: "FK_ChatMembers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_ChatMembers_ChatRooms_RoomId",
+                        column: x => x.RoomId,
+                        principalTable: "ChatRooms",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "ChatMessages",
                 columns: table => new
                 {
@@ -180,8 +212,7 @@ namespace Chats24h.Data.Migrations
                     RoomId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     Message = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    SentAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
-                    ChatRoomId = table.Column<Guid>(type: "uniqueidentifier", nullable: false)
+                    SentAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -191,10 +222,10 @@ namespace Chats24h.Data.Migrations
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_ChatMessages_ChatRooms_ChatRoomId",
-                        column: x => x.ChatRoomId,
+                        name: "FK_ChatMessages_ChatRooms_RoomId",
+                        column: x => x.RoomId,
                         principalTable: "ChatRooms",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -240,9 +271,14 @@ namespace Chats24h.Data.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
-                name: "IX_ChatMessages_ChatRoomId",
+                name: "IX_ChatMembers_RoomId",
+                table: "ChatMembers",
+                column: "RoomId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatMessages_RoomId",
                 table: "ChatMessages",
-                column: "ChatRoomId");
+                column: "RoomId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ChatMessages_UserId",
@@ -253,6 +289,11 @@ namespace Chats24h.Data.Migrations
                 name: "IX_ChatRooms_ExpiresAt",
                 table: "ChatRooms",
                 column: "ExpiresAt");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_ChatRooms_OwnerId",
+                table: "ChatRooms",
+                column: "OwnerId");
         }
 
         /// <inheritdoc />
@@ -274,16 +315,19 @@ namespace Chats24h.Data.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "ChatMembers");
+
+            migrationBuilder.DropTable(
                 name: "ChatMessages");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "AspNetUsers");
+                name: "ChatRooms");
 
             migrationBuilder.DropTable(
-                name: "ChatRooms");
+                name: "AspNetUsers");
         }
     }
 }
