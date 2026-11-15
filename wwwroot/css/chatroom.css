@@ -1,9 +1,12 @@
 #chat-container {
   display: flex;
   padding: 0.5rem;
-  border: var(--bs-border-width) var(--bs-border-style) var(--bs-border-color) !important;
-  border-radius: var(--bs-border-radius-lg) !important;
+  border: 3px var(--bs-border-style) var(--bs-border-color);
+  border-bottom: 6px var(--bs-border-style) var(--bs-border-color);
+  border-right: 6px var(--bs-border-style) var(--bs-border-color);
+  border-radius: 2rem !important;
   background-color: var(--chat-container);
+  max-height: 95vh;
 }
 
 #message-box {
@@ -11,7 +14,6 @@
   scrollbar-width: none;
   overflow-x: hidden;
   border-radius: 10px;
-  height: 75vh;
 }
 
 #action-bar {
@@ -23,6 +25,7 @@
 #users {
   background-color: var(--chat-container);
   border-radius: 10px;
+  width: 15%;
 }
 
 .chatmessage {
@@ -30,12 +33,8 @@
   word-wrap: break-word;
 }
 
-#messageForm {
-  /* background-color: var(--chat-container); */
-}
-
 .chatmessage:hover {
-  /* background-color: var(--chatmessage-hover); */
+  background-color: var(--chatmessage-hover);
 }
 
 .message-nickname {

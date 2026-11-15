@@ -5,16 +5,18 @@
     ViewData["Timeleft"] = (Model.Room.ExpiresAt - DateTimeOffset.Now);
 }
 
-<section id="chatroom" class=" my-4 m-auto d-block justify-content-center">
-    <div id="chat-container">
+<section id="chatroom" class="justify-content-center">
+    <div id="chat-container" class="mt-3">
         @* left box *@
-        <div class="container">
+        <div class="container m-4 my-2 d-flex flex-column">
             <div id="chat" data-room-id="@Model.Room.Id" data-expires-at="@Model.Room.ExpiresAt.ToString("O")"
-                 class="d-flex justify-content-between my-2">
+                 class="d-flex justify-content-between mt-2">
                 <input id="userInput" value="@Model.ChatUserId" type="hidden" />
                 <h1 class="mb-2">@Model.Room.Name</h1>
                 <p class="align-self-end mb-2">Chat opened until @Model.Room.ExpiresAt.ToString("f")</p>
             </div>
+            <hr class="mt-2" />
+            <p>@Model.Room.Description</p>
             <div id="message-box" class="border d-block bg-white">
                 <ul id="messagesList" class="list-unstyled p-4 pb-0 flex-grow-1" aria-live="polite">
                     <li id="connectionStatus" role="status" class="mb-2  text-muted">Connecting…
@@ -31,7 +33,7 @@
                 </ul>
 
             </div>
-            <div id="action-bar" class="m-2 mx-4">
+            <div id="action-bar" class="mt-3 mx-4">
                 <form id="messageForm" class="d-flex gap-2">
                     <label for="messageInput" class="visually-hidden">Message</label>
                     <input id="messageInput" role="textbox" class="form-control" maxlength="2000" autocomplete="off"
@@ -46,19 +48,25 @@
 
 
         @* User box *@
-        <aside id="users" class="p-4 border-start">
-            <h3>Users</h3>
-            @foreach (var member in Model.Room.ChatMembers)
-            {
-                if (member.UserId == Model.Room.OwnerId)
+        <aside id="users" class="p-4 border-start overflow-hidden d-flex flex-column justify-content-between">
+            <div>
+                <h3 class="text-center">Users</h3>
+                @foreach (var member in Model.Room.ChatMembers)
                 {
-                    <p>!!! @member.ChatUser.Nickname</p>
+                    if (member.UserId == Model.Room.OwnerId)
+                    {
+                        <p>!!! @member.ChatUser.Nickname</p>
+                    }
+                    else
+                    {
+                        <p>@member.ChatUser.Nickname</p>
+                    }
                 }
-                else
-                {
-                    <p>@member.ChatUser.Nickname</p>
-                }
-            }
+            </div>
+
+            <button id="chat-settings-btn" type="submit" class="btn btn-primary">
+                Settings
+            </button>
         </aside>
     </div>
 </section>
