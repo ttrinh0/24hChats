@@ -11,6 +11,7 @@ public class ChatRoom
     [MaxLength(160)]
     public string Description { get; set; } = "";
     public string OwnerId { get; set; } = null!;
+    public string Theme { get; set; } = "";
     public ICollection<ChatMember> ChatMembers { get; set; } = [];
     public DateTimeOffset CreatedAt { get; set; }
     public DateTimeOffset ExpiresAt { get; set; }

@@ -6,4 +6,5 @@ namespace Chats24h.Models;
 public class ChatUser : IdentityUser
 {
     public string Nickname { get; set; } = "";
+    public string Colour = "";
 }

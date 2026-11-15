@@ -4,7 +4,9 @@
   --logo-font: "Changa One", sans-serif;
   --logo-color: #000000;
   --logo-color2: #00bfff;
-  --chat-container: #f366bd;
+  --chat-container: #f772c4;
+  --chat-user-hover: #e659b0;
+  --chat-header-text-color: #000000;
 }
 
 .form-control {
