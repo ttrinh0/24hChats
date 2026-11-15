@@ -51,7 +51,7 @@
 
         @* User box *@
         <aside id="users"
-               class="p-3 my-2 border-start border-3 overflow-hidden d-flex flex-column justify-content-between chat-desc-text">
+               class="p-3 pb-0 my-2 border-start border-3 overflow-hidden d-flex flex-column justify-content-between chat-desc-text">
             <div>
                 <h2 class="text-center mb-3">Users</h2>
                 <hr class="my-2 mb-3" />
@@ -72,10 +72,11 @@
                     {
                         <li class="list-unstyled user-list">@member.ChatUser.Nickname</li>
                     }
+
                 }
             </div>
 
-            <button id="chat-settings-btn" type="submit" class="btn">
+            <button id="chat-settings-btn" type="submit" class="btn align-self-end rounded-4">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
                      class="bi bi-gear-fill" viewBox="0 0 16 16">
                     <path

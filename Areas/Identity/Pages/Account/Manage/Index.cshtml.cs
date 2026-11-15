@@ -11,6 +11,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Chats24h.Data;
 using Chats24h.Models;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Chats24h.Areas.Identity.Pages.Account.Manage;
 
@@ -66,6 +67,8 @@ public class IndexModel : PageModel
         public string? PhoneNumber { get; set; }
         [Display(Name = "Nickname")]
         public string? Nickname { get; set; }
+        [Display(Name = "Colour")]
+        public string? Colour { get; set; }
     }
 
     private async Task LoadAsync(ChatUser user)
@@ -78,7 +81,8 @@ public class IndexModel : PageModel
         Input = new InputModel
         {
             PhoneNumber = phoneNumber,
-            Nickname = user.Nickname
+            Nickname = user.Nickname,
+            Colour = user.Colour,
         };
     }
 
@@ -122,6 +126,10 @@ public class IndexModel : PageModel
         if (Input.Nickname != user.Nickname)
         {
             user.Nickname = Input.Nickname ?? "";
+        }
+        if (Input.Colour != user.Colour)
+        {
+            user.Colour = Input.Colour ?? "";
         }
         _context.SaveChanges();
         await _signInManager.RefreshSignInAsync(user);

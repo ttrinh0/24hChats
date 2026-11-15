@@ -16,14 +16,22 @@
                 <label asp-for="Username" class="form-label"></label>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.Nickname" class="form-control" placeholder="Choose your Nickname."/>
+                <input asp-for="Input.Nickname" class="form-control" placeholder="Choose your Nickname." />
                 <label asp-for="Input.Nickname" class="form-label"></label>
                 <span asp-validation-for="Input.Nickname" class="text-danger"></span>
             </div>
             <div class="form-floating mb-3">
-                <input asp-for="Input.PhoneNumber" class="form-control" placeholder="Please enter your phone number."/>
-                <label asp-for="Input.PhoneNumber" class="form-label"></label>
-                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+                <select asp-for="Input.Colour" class="form-select" id="userColour">
+                    <option value="">Black</option>
+                    <option value="Grey">Grey</option>
+                    <option value="Red">Red</option>
+                    <option value="Orange">Orange</option>
+                    <option value="Green">Green</option>
+                    <option value="Blue">Blue</option>
+                    <option value="Cyan">Cyan</option>
+                    <option value="Purple">Purple</option>
+                    <option value="Pink">Pink</option>
+                </select>
             </div>
             <button id="update-profile-button" type="submit" class="w-100 btn btn-lg btn-primary">Save</button>
         </form>

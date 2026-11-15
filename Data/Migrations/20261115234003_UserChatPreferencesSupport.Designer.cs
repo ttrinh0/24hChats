@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Chats24h.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20261114040214_AddChatMembers")]
-    partial class AddChatMembers
+    [Migration("20261115234003_UserChatPreferencesSupport")]
+    partial class UserChatPreferencesSupport
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -97,6 +97,10 @@ namespace Chats24h.Data.Migrations
                     b.Property<string>("OwnerId")
                         .IsRequired()
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("Theme")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

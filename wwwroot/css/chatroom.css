@@ -28,6 +28,7 @@
   scroll-behavior: smooth;
   overflow-x: hidden;
   border-radius: 10px;
+  height: 100vh;
 }
 
 #action-bar {

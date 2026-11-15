@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Chats24h.Data.Migrations
 {
     /// <inheritdoc />
-    public partial class AddChatMembers : Migration
+    public partial class UserChatPreferencesSupport : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -165,6 +165,7 @@ namespace Chats24h.Data.Migrations
                     Name = table.Column<string>(type: "nvarchar(80)", maxLength: 80, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(160)", maxLength: 160, nullable: false),
                     OwnerId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    Theme = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreatedAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false),
                     ExpiresAt = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false)
                 },
