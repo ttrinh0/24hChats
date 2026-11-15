@@ -5,18 +5,17 @@
     ViewData["Timeleft"] = (Model.Room.ExpiresAt - DateTimeOffset.Now);
 }
 
-<section id="chatroom" class=" my-4 m-auto d-block  justify-content-center">
-    <div class="d-flex">
+<section id="chatroom" class=" my-4 m-auto d-block justify-content-center">
+    <div id="chat-container">
         @* left box *@
         <div class="container">
             <div id="chat" data-room-id="@Model.Room.Id" data-expires-at="@Model.Room.ExpiresAt.ToString("O")"
-                 class="d-flex justify-content-between">
+                 class="d-flex justify-content-between my-2">
                 <input id="userInput" value="@Model.ChatUserId" type="hidden" />
                 <h1 class="mb-2">@Model.Room.Name</h1>
-                <p class="align-self-end mb-2">Chat opened until @Model.Room.ExpiresAt.DateTime</p>
+                <p class="align-self-end mb-2">Chat opened until @Model.Room.ExpiresAt.ToString("f")</p>
             </div>
-            @* <section id="main-chatbox" class="d-flex"> *@
-            <div id="message-box" class="border d-block">
+            <div id="message-box" class="border d-block bg-white">
                 <ul id="messagesList" class="list-unstyled p-4 pb-0 flex-grow-1" aria-live="polite">
                     <li id="connectionStatus" role="status" class="mb-2  text-muted">Connecting…
 
@@ -32,7 +31,7 @@
                 </ul>
 
             </div>
-            <div id="action-bar" class="p-2 px-4">
+            <div id="action-bar" class="m-2 mx-4">
                 <form id="messageForm" class="d-flex gap-2">
                     <label for="messageInput" class="visually-hidden">Message</label>
                     <input id="messageInput" role="textbox" class="form-control" maxlength="2000" autocomplete="off"
@@ -47,7 +46,7 @@
 
 
         @* User box *@
-        <aside id="users" class="p-4">
+        <aside id="users" class="p-4 border-start">
             <h3>Users</h3>
             @foreach (var member in Model.Room.ChatMembers)
             {

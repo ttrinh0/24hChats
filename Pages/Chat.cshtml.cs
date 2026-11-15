@@ -24,7 +24,7 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
         }
 
         var now = DateTimeOffset.UtcNow;
-
+        
         var room = await db.ChatRooms
             .Include(c => c.Owner)
             .Include(c => c.ChatMembers)
@@ -55,4 +55,5 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
         Messages = messages;
         return Page();
     }
+
 }
