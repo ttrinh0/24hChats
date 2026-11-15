@@ -1,45 +1,24 @@
-@* <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-    <div class="container">
-        <a class="navbar-brand" asp-area="" asp-page="/Index">Chats24h</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse"
-                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-            <ul class="navbar-nav flex-grow-1">
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-page="/Index">Chat rooms</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-page="/Create">Create</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                </li>
-            </ul>
-        </div>
-        <partial name="_LoginPartial" />
-    </div>
-</nav> *@
-
-<nav class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end h-100" style="width: 280px;">
+<nav class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end border-5 h-100" style="width: 280px;">
     <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
-        <span class="fs-4">Chats24h</span>
+        <span class="logo px-2">CHATS<span class="logo2">24h</span></span>
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Chat rooms</a>
+            <a class="btn nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-page="/Create">Create</a>
+            <a class="btn nav-link text-dark" asp-area="" asp-page="/MyRooms">My Rooms</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+            <a class="btn nav-link text-dark" asp-area="" asp-page="/Join">Join a Room</a>
+        </li>
+        <li class="nav-item">
+            <a class="btn nav-link text-dark" asp-area="" asp-page="/Create">Create a Room</a>
         </li>
     </ul>
     <hr>
-    <div class="dropdown">
+    <div class="dropdown btn ">
         <partial name="_LoginPartial" />
     </div>
 </nav>

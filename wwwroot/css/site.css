@@ -1,5 +1,18 @@
 :root {
   --chat-background: #f4f5f6;
+  --chatmessage-hover: #e4e4e4;
+  --logo-font: "Changa One", sans-serif;
+  --logo-color: #000000;
+  --logo-color2: #00bfff;
+}
+
+.logo {
+  font-family: var(--logo-font);
+  font-size: 32pt;
+  color: var(--logo-color);
+}
+.logo2 {
+  color: var(--logo-color2);
 }
 
 html {

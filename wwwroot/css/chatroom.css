@@ -1,16 +1,20 @@
+
+
 #chatroom {
 }
 
 #message-box {
-  overflow: auto;
+  overflow: scroll;
   scrollbar-width: none;
   overflow-x: hidden;
-  height: 60vh;
-  border-bottom-right-radius: 10px;
+  border-radius: 10px;
+  height: 75vh;
 }
 
 #main-chatbox {
   border-radius: 10px;
+  width: 100%;
+  position: relative;
 }
 
 #action-bar {
@@ -23,4 +27,26 @@
 #users {
   background-color: var(--chat-background);
   border-radius: 10px;
+}
+
+.chatmessage {
+  text-wrap: balance;
+  word-wrap: break-word;
+}
+
+.chatmessage:hover {
+  background-color: var(--chatmessage-hover);
+}
+
+.message-nickname {
+  color: blue;
+  font-weight: bold;
+}
+
+/* #users {
+  width: 150px;
+} */
+
+.dropdown {
+  cursor: pointer;
 }

@@ -11,14 +11,19 @@
     <link rel="stylesheet" href="~/css/chatroom.css" asp-append-version="true" />
     <link rel="stylesheet" href="_Layout.cshtml.css" asp-append-version="true" />
     @* <link rel="stylesheet" href="~/_Chats24h.styles.css" asp-append-version="true" /> *@
+    @* Font imports *@
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Changa+One:ital@0;1&display=swap" rel="stylesheet">
+
 </head>
 
 <body>
-    <main class="d-flex border vh-100">
+    <main class="d-flex border-black border-5 vh-100">
         <header>
             <partial name="_Navigation" />
         </header>
-        <div class="container mt-4">
+        <div class="container">
             <main role="main">
                 @RenderBody()
             </main>

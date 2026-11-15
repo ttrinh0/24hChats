@@ -28,10 +28,14 @@ connection.on("ReceiveMessage", (nickname, message) => {
   if (expired) return;
 
   const item = document.createElement("li");
-  item.className = "mb-2";
+  const nametag = document.createElement("span");
+  item.className = "mb-2 chatmessage";
+  nametag.className = "message-nickname";
+  nametag.innerText = `${nickname}`;
 
   // Treat messages as text, never as HTML.
-  item.textContent = `${nickname}: ${message}`;
+  item.textContent = `: ${message}`;
+  item.prepend(nametag);
   messages.appendChild(item);
   messageBox.scrollTop = messageBox.scrollHeight - messageBox.clientHeight;
 });

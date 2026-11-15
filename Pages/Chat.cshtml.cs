@@ -38,7 +38,11 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
             return NotFound("This room does not exist or has expired.");
         }
 
-        var messages = await db.ChatMessages.Include(c => c.User).Where(c => c.RoomId == roomId).ToListAsync();
+        var messages = await db.ChatMessages
+        .Include(c => c.User)
+        .Where(c => c.RoomId == roomId)
+        .OrderBy(c => c.SentAt)
+        .ToListAsync();
 
         var user = await _userManager.GetUserAsync(User);
 

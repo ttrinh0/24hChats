@@ -5,57 +5,67 @@
     ViewData["Timeleft"] = (Model.Room.ExpiresAt - DateTimeOffset.Now);
 }
 
-<main id="chatroom" class="d-flex justify-content-between border">
-    @* left box *@
-    <div id="" class="flex-grow-1">
-        <div id="chat" data-room-id="@Model.Room.Id" data-expires-at="@Model.Room.ExpiresAt.ToString("O")"
-             class="d-flex align-self-end">
-            <input id="userInput" value="@Model.ChatUserId" type="hidden" />
-            <h1>@Model.Room.Name</h1>
-            <p>Chat opened until @Model.Room.ExpiresAt.DateTime</p>
-        </div>
-        <section id="main-chatbox" class="">
-            <div id="message-box" class=" border">
-                <ul id="messagesList" class="list-unstyled p-4 pb-0" aria-live="polite">
-                    <li id="connectionStatus" role="status" class="mb-2  text-muted">Connecting…</li>
+<section id="chatroom" class=" my-4 m-auto d-block  justify-content-center">
+    <div class="d-flex">
+        @* left box *@
+        <div class="container">
+            <div id="chat" data-room-id="@Model.Room.Id" data-expires-at="@Model.Room.ExpiresAt.ToString("O")"
+                 class="d-flex justify-content-between">
+                <input id="userInput" value="@Model.ChatUserId" type="hidden" />
+                <h1 class="mb-2">@Model.Room.Name</h1>
+                <p class="align-self-end mb-2">Chat opened until @Model.Room.ExpiresAt.DateTime</p>
+            </div>
+            @* <section id="main-chatbox" class="d-flex"> *@
+            <div id="message-box" class="border d-block">
+                <ul id="messagesList" class="list-unstyled p-4 pb-0 flex-grow-1" aria-live="polite">
+                    <li id="connectionStatus" role="status" class="mb-2  text-muted">Connecting…
+
+                    </li>
                     @foreach (var message in Model.Messages)
                     {
-                        <li class="mb-2">@message.User.Nickname: @message.Message</li>
+                        <li class="mb-2 chatmessage">
+                            <span class="message-nickname">@message.User.Nickname</span>:
+                            @message.Message
+                        </li>
                     }
+
                 </ul>
 
-                <div id="action-bar" class="p-2 px-4">
-                    <form id="messageForm" class="d-flex gap-2">
-                        <label for="messageInput" class="visually-hidden">Message</label>
-                        <input id="messageInput" class="form-control" maxlength="2000" autocomplete="off"
-                               placeholder="Write a message…" />
-                        <button id="sendButton" type="submit" class="btn btn-primary" disabled>
-                            Send
-                        </button>
-                    </form>
-                </div>
             </div>
-        </section>
-    </div>
+            <div id="action-bar" class="p-2 px-4">
+                <form id="messageForm" class="d-flex gap-2">
+                    <label for="messageInput" class="visually-hidden">Message</label>
+                    <input id="messageInput" role="textbox" class="form-control" maxlength="2000" autocomplete="off"
+                           placeholder="Write a message…" />
+                    <button id="sendButton" type="submit" class="btn btn-primary" disabled>
+                        Send
+                    </button>
+                </form>
+            </div>
+        </div>
 
-    @* User box *@
-    <aside id="users" class="p-4">
-        <h3>Users</h3>
-        @foreach (var member in Model.Room.ChatMembers)
-        {
-            if (member.UserId == Model.Room.OwnerId)
+
+
+        @* User box *@
+        <aside id="users" class="p-4">
+            <h3>Users</h3>
+            @foreach (var member in Model.Room.ChatMembers)
             {
-                <p>!!! @member.ChatUser.Nickname</p>
+                if (member.UserId == Model.Room.OwnerId)
+                {
+                    <p>!!! @member.ChatUser.Nickname</p>
+                }
+                else
+                {
+                    <p>@member.ChatUser.Nickname</p>
+                }
             }
-            else
-            {
-                <p>@member.ChatUser.Nickname</p>
-            }
-        }
-    </aside>
-</main>
+        </aside>
+    </div>
+</section>
 
 @section Scripts {
     <script src="~/js/signalr/dist/browser/signalr.js"></script>
     <script src="~/js/chat.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
 }
