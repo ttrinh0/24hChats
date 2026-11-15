@@ -29,12 +29,21 @@ connection.on("ReceiveMessage", (nickname, message) => {
 
   const item = document.createElement("li");
   const nametag = document.createElement("span");
+  const timetag = document.createElement("span");
   item.className = "mb-2 chatmessage";
   nametag.className = "message-nickname";
   nametag.innerText = `${nickname}`;
+  timetag.className = "message-time";
+  const time = new Date().toLocaleTimeString(navigator.language, {
+    hour: "2-digit",
+    minute: "2-digit",
+  });
+  timetag.innerText = ` ${time.substring(1)}`;
 
   // Treat messages as text, never as HTML.
-  item.textContent = `: ${message}`;
+  item.textContent = `${message}`;
+  item.prepend(document.createElement("br"));
+  item.prepend(timetag);
   item.prepend(nametag);
   messages.appendChild(item);
   messageBox.scrollTop = messageBox.scrollHeight - messageBox.clientHeight;

@@ -11,7 +11,8 @@
 
 #message-box {
   overflow: scroll;
-  scrollbar-width: none;
+  scrollbar-width: thin;
+  scroll-behavior: smooth;
   overflow-x: hidden;
   border-radius: 10px;
 }
@@ -32,7 +33,9 @@
   text-wrap: balance;
   word-wrap: break-word;
 }
-
+.message-time {
+  font-size: small;
+}
 .chatmessage:hover {
   background-color: var(--chatmessage-hover);
 }

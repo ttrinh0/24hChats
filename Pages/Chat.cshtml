@@ -2,7 +2,6 @@
 @model ChatModel
 @{
     ViewData["Title"] = Model.Room.Name;
-    ViewData["Timeleft"] = (Model.Room.ExpiresAt - DateTimeOffset.Now);
 }
 
 <section id="chatroom" class="justify-content-center">
@@ -25,7 +24,8 @@
                     @foreach (var message in Model.Messages)
                     {
                         <li class="mb-2 chatmessage">
-                            <span class="message-nickname">@message.User.Nickname</span>:
+                            <span class="message-nickname">@message.User.Nickname</span>
+                            <span class="message-time">@message.SentAt.ToLocalTime().ToString("t")</span><br />
                             @message.Message
                         </li>
                     }
