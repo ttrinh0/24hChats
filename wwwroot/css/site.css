@@ -7,6 +7,16 @@
   --chat-container: #f772c4;
   --chat-user-hover: #e659b0;
   --chat-header-text-color: #000000;
+
+  --user-colour-default: #000;
+  --user-colour-grey: #585858;
+  --user-colour-red: #8a0000;
+  --user-colour-orange: #c26519;
+  --user-colour-green: #1d8649;
+  --user-colour-blue: #162180;
+  --user-colour-cyan: #16b9c5;
+  --user-colour-purple: #5a2579;
+  --user-colour-pink: #bd478c;
 }
 
 .form-control {

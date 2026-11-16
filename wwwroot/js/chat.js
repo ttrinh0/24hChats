@@ -7,6 +7,7 @@ const expiresAt = Date.parse(chat.dataset.expiresAt);
 const status = document.getElementById("connectionStatus");
 const sendButton = document.getElementById("sendButton");
 const nicknameInput = document.getElementById("userInput");
+const userColourInput = document.getElementById("userColour");
 const messageInput = document.getElementById("messageInput");
 const messages = document.getElementById("messagesList");
 const messageBox = document.getElementById("message-box");
@@ -24,14 +25,15 @@ function updateSendButton() {
   sendButton.disabled = expired || !joined || sending;
 }
 
-connection.on("ReceiveMessage", (nickname, message) => {
+connection.on("ReceiveMessage", (nickname, message, colour) => {
   if (expired) return;
 
   const item = document.createElement("li");
   const nametag = document.createElement("span");
   const timetag = document.createElement("span");
   item.className = "mb-2 chatmessage";
-  nametag.className = "message-nickname";
+  if (colour == "") nametag.className = "message-nickname";
+  else nametag.className = `message-nickname message-${colour}`;
   nametag.innerText = `${nickname}`;
   timetag.className = "message-time";
   const time = new Date().toLocaleTimeString(navigator.language, {
@@ -117,6 +119,7 @@ document
     if (!joined || expired || sending) return;
 
     const nickname = nicknameInput.value.trim();
+    const colour = userColour.value;
     const message = messageInput.value.trim();
 
     if (!nickname || !message) {
@@ -128,7 +131,7 @@ document
     updateSendButton();
 
     try {
-      await connection.invoke("SendMessage", nickname, message);
+      await connection.invoke("SendMessage", nickname, message, colour);
 
       // Keep any new text typed while the request was in progress.
       if (messageInput.value.trim() === message) {

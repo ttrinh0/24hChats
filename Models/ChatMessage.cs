@@ -8,6 +8,7 @@ public class ChatMessage
     public Guid RoomId { get; set; }
     public string UserId { get; set; } = null!;
     public string Message { get; set; } = null!;
+    public string Colour { get; set; } = "";
     public DateTimeOffset SentAt { get; set; } = DateTime.UtcNow;
 
     //Navigation

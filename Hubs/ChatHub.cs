@@ -30,7 +30,7 @@ public class ChatHub(ApplicationDbContext db) : Hub
         Context.Items[RoomKey] = roomId;
     }
 
-    public async Task SendMessage(string chatUserId, string message)
+    public async Task SendMessage(string chatUserId, string message, string colour)
     {
         var chatUser = await db.ChatUsers.FindAsync(chatUserId);
         if (chatUser == null)
@@ -62,7 +62,8 @@ public class ChatHub(ApplicationDbContext db) : Hub
         {
             RoomId = roomId,
             UserId = chatUserId,
-            Message = message
+            Message = message,
+            Colour = colour
         });
         await db.SaveChangesAsync();
 
@@ -71,7 +72,7 @@ public class ChatHub(ApplicationDbContext db) : Hub
         await Clients.Group(GroupName(roomId)).SendAsync(
             "ReceiveMessage",
             nickname,
-            message);
+            message, colour);
     }
 
     private async Task RequireActiveRoomAsync(Guid roomId)

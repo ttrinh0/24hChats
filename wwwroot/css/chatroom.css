@@ -58,8 +58,32 @@
 }
 
 .message-nickname {
-  color: blue;
   font-weight: bold;
+}
+
+.message-Grey {
+  color: var(--user-colour-grey);
+}
+.message-Red {
+  color: var(--user-colour-red);
+}
+.message-Orange {
+  color: var(--user-colour-orange);
+}
+.message-Green {
+  color: var(--user-colour-green);
+}
+.message-Blue {
+  color: var(--user-colour-blue);
+}
+.message-Cyan {
+  color: var(--user-colour-cyan);
+}
+.message-Purple {
+  color: var(--user-colour-purple);
+}
+.message-Pink {
+  color: var(--user-colour-pink);
 }
 
 .dropdown {
