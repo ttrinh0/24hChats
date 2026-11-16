@@ -14,6 +14,10 @@
                     <input id="userInput" value="@Model.ChatUserId" type="hidden" />
                     <input id="userColour" value="@Model.ChatUserColour" type="hidden" />
                     <h1 class="mb-2">@Model.Room.Name</h1>
+                    <li class="align-self-end mb-2 list-unstyled text-muted">Status: <span id="connectionStatus"
+                                                                                           role="status">
+                        Connecting…
+                    </span></li>
                     <p class="align-self-end mb-2">Chat opened until @Model.Room.ExpiresAt.ToString("f")</p>
                 </div>
                 <hr class="mt-2" />
@@ -21,9 +25,7 @@
             </div>
             <div id="message-box" class="border d-block bg-white">
                 <ul id="messagesList" class="list-unstyled p-4 pb-0 flex-grow-1" aria-live="polite">
-                    <li id="connectionStatus" role="status" class="mb-2  text-muted">Connecting…
 
-                    </li>
                     @foreach (var message in Model.Messages)
                     {
                         <li class="mb-2 chatmessage">
