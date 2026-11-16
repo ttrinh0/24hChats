@@ -31,7 +31,7 @@
                         <input asp-for="RoomDesc" type="name" class="form-control" value="@Model.Room.Description"
                                placeholder="Enter Chatroom Description">
                     </div>
-                    <div class="mb-4">
+                    <div class="my-2">
                         <label for="room-theme" class="form-label">Theme</label>
                         <div class="create-room-theme">
                             <div>
@@ -48,6 +48,13 @@
                     <button type="submit" class="btn btn-primary">Save changes</button>
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                 </div>
+            </form>
+            <hr />
+            <form asp-page-handler="Delete" method="post" class="m-auto mb-3">
+                <input asp-for="RoomDesc" type="name" class="form-control" value="@Model.Room.Description" hidden />
+                <input asp-for="RoomName" type="name" class="form-control" value="@Model.Room.Name"
+                       placeholder="Enter Chatroom Name" hidden />
+                <button type="submit" class="btn btn-danger">Delete Room</button>
             </form>
         </div>
     </div>

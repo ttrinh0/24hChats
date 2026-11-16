@@ -88,7 +88,6 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
         {
             return NotFound();
         }
-        Console.WriteLine($"\n\n1{RoomName}1\n\n");
 
         if (string.IsNullOrWhiteSpace(RoomName))
         {
@@ -107,4 +106,25 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
         return RedirectToPage();
     }
 
+    public async Task<IActionResult> OnPostDeleteAsync(Guid? roomId)
+    {
+        var currentUser = await _userManager.GetUserAsync(User);
+        var room = await db.ChatRooms.FindAsync(roomId);
+        if (currentUser == null || room == null)
+        {
+            return NotFound();
+        }
+        if (currentUser.Id != room.OwnerId)
+        {
+            return RedirectToPage();
+        }
+        if (ModelState.IsValid)
+        {
+            db.ChatRooms.Remove(room);
+
+            await db.SaveChangesAsync();
+        }
+        Console.WriteLine($"\n\n1{RoomName}1\n\n");
+        return RedirectToPage("/Index");
+    }
 }
