@@ -66,10 +66,12 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
         return Page();
     }
 
-    public async Task<IActionResult> OnPostEditAsync(Guid id, ChatRoom chatRoom)
+    public async Task<IActionResult> OnPostEditAsync()
     {
+
         RoomName = RoomName?.Trim() ?? "";
         RoomDesc = RoomDesc?.Trim() ?? "";
+        Console.WriteLine($"\n\n1{RoomName}1\n\n");
         var currentUser = await _userManager.GetUserAsync(User);
 
         if (currentUser == null)
@@ -109,19 +111,7 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
             await db.SaveChangesAsync();
         }
 
-        return RedirectToPage("/Chat", new { roomId = room.Id });
-    }
-
-    private async Task LoadAsync(ChatRoom chatRoom)
-    {
-        // RoomName = userName;
-
-        // Input = new InputModel
-        // {
-        //     PhoneNumber = phoneNumber,
-        //     Nickname = user.Nickname,
-        //     Colour = user.Colour,
-        // };
+        return RedirectToPage();
     }
 
 }

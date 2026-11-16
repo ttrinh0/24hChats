@@ -1,11 +1,18 @@
+@using Chats24h.Models
+@inject SignInManager<ChatUser> SignInManager
+@{
+    var homelink = SignInManager.IsSignedIn(User) ? "/Index" : "/Landing";
+}
+
 <nav class="d-flex flex-column flex-shrink-0 p-3 bg-light border-end border-5 h-100" style="width: 280px;">
-    <a href="/" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+    
+    <a href="@homelink" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
         <span class="logo px-2">CHATS<span class="logo2">24h</span></span>
     </a>
     <hr>
     <ul class="nav nav-pills flex-column mb-auto">
         <li class="nav-item">
-            <a class="btn nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+            <a class="btn nav-link text-dark" asp-area="" asp-page="@homelink">Home</a>
         </li>
         <li class="nav-item">
             <a class="btn nav-link text-dark" asp-area="" asp-page="/MyRooms">My Rooms</a>
