@@ -1,0 +1,19 @@
+﻿@page
+@model LandingModel
+@{
+    ViewData["Title"] = "CHATS24";
+}
+
+<section class="card p-5 border-3">
+    <h1 class="">@ViewData["Title"]</h1>
+    <h3>Chatrooms that last 24 hours... Then they are gone FOREVER.</h3>
+    <p>Register or Login to start chatting.</p>
+    <div>
+        <button asp-area="Identity" asp-page="/Account/Register" type="button" class="btn btn-primary">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Register">Register</a>
+        </button>
+        <button type="button" class="btn btn-secondary">
+            <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Login">Login</a>
+        </button>
+    </div>
+</section>
