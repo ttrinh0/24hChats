@@ -1,7 +1,6 @@
-using System.ComponentModel.DataAnnotations;
+using System.Security.Claims;
 using Chats24h.Data;
 using Chats24h.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 
@@ -9,57 +8,20 @@ namespace Chats24h.Pages;
 
 public class IndexModel(ApplicationDbContext db) : PageModel
 {
-    public List<ChatRoom> Rooms { get; private set; } = [];
-
-    [BindProperty]
-    [Required(ErrorMessage = "Enter a room name.")]
-    [StringLength(80)]
-    public string RoomName { get; set; } = "";
-
-    public async Task OnGetAsync() // 'Task' type is somewhat like Promise in .js
+    public List<ChatRoom> MyRooms { get; private set; } = [];
+    public List<ChatRoom> RecentRooms { get; private set; } = [];
+    public List<ChatRoom> OpenRooms { get; private set; } = [];
+    public async Task OnGetAsync()
     {
-        await LoadRoomsAsync();
-    }
-
-    public async Task<IActionResult> OnPostAsync()
-    {
-        RoomName = RoomName?.Trim() ?? "";
-
-        if (string.IsNullOrWhiteSpace(RoomName))
-        {
-            ModelState.AddModelError(
-                nameof(RoomName), "Enter a room name.");
-        }
-
-        if (!ModelState.IsValid)
-        {
-            await LoadRoomsAsync();
-            return Page();
-        }
-
+        var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+        if (userId is null) return;
         var now = DateTimeOffset.UtcNow;
-
-        var room = new ChatRoom
-        {
-            Name = RoomName,
-            CreatedAt = now,
-            ExpiresAt = now.AddHours(24)
-        };
-
-        db.ChatRooms.Add(room);
-        await db.SaveChangesAsync();
-
-        return RedirectToPage("/Chat", new { roomId = room.Id });
-    }
-
-    private async Task LoadRoomsAsync()
-    {
-        var now = DateTimeOffset.UtcNow;
-
-        Rooms = await db.ChatRooms
-            .AsNoTracking()
-            .Where(room => room.ExpiresAt > now)
-            .OrderByDescending(room => room.CreatedAt)
-            .ToListAsync();
+        var active = db.ChatRooms.AsNoTracking().Include(r => r.Owner).Where(r => r.ExpiresAt > now);
+        MyRooms = await active.Where(r => r.OwnerId == userId).OrderByDescending(r => r.CreatedAt).Take(3).ToListAsync();
+        RecentRooms = await db.ChatRooms.AsNoTracking().Include(r => r.Owner)
+            .Where(r => r.ExpiresAt > now && r.ChatMembers.Any(m => m.UserId == userId))
+            .OrderByDescending(r => r.ChatMembers.Where(m => m.UserId == userId).Select(m => m.JoinedAt).First())
+            .Take(3).ToListAsync();
+        OpenRooms = await active.OrderByDescending(r => r.CreatedAt).Take(6).ToListAsync();
     }
 }

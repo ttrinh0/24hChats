@@ -19,16 +19,19 @@
 </head>
 
 <body>
-    <main class="d-flex border-black border-5 vh-100">
-        <header>
-            <partial name="_Navigation" />
-        </header>
-        <div class="container">
-            <main role="main">
+    <div class="app-shell">
+        @if (!(ViewContext.RouteData.Values["page"]?.ToString() == "/Index" && User.Identity?.IsAuthenticated != true))
+        {
+            <header class="app-sidebar">
+                <partial name="_Navigation" />
+            </header>
+        }
+        <div class="app-content">
+            <main>
                 @RenderBody()
             </main>
         </div>
-    </main>
+    </div>
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>

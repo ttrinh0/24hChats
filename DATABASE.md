@@ -74,6 +74,22 @@ dotnet watch
 
 `database update` creates the database if needed and applies existing migrations. No new migration is required just for switching from LocalDB to Docker. LocalDB records are not automatically transferred.
 
+### Add sample rooms
+
+With the database container running and the migrations applied, register an account in the app, then run:
+
+```powershell
+.\scripts\seed-sample-data.ps1
+```
+
+When there is more than one account, select the owner by email:
+
+```powershell
+.\scripts\seed-sample-data.ps1 -Email "you@example.com"
+```
+
+The script adds four rooms, owner memberships, and sample messages to the local `Chats24h` database. Each room lasts 24 hours from its sample creation time. Existing data is left intact; running the script again skips sample rooms with the same name and owner that are still active. The script uses the SQL Server container's configured `sa` password and does not create login accounts.
+
 To inspect migration status:
 
 ```powershell

@@ -1,42 +1,30 @@
-﻿@page
-@model IndexModel
-@{
-    ViewData["Title"] = "Chat rooms";
+@page
+@model JoinModel
+@{ ViewData["Title"] = "Join a Room"; }
+<div class="room-page">
+    <h1>Join a Room</h1>
+    <p class="room-page-intro">Pick a room and join the conversation.</p>
+    <div class="mb-4">
+        <label for="room-search" class="form-label">Search rooms</label>
+        <input id="room-search" type="search" class="form-control" placeholder="Search by room name or description" autocomplete="off" />
+    </div>
+    <section class="room-section" aria-labelledby="recent-rooms-heading" data-room-section>
+        <div class="room-section-heading"><h2 id="recent-rooms-heading">Recent Rooms</h2></div>
+        @if (Model.RecentRooms.Count == 0) { <p class="room-empty">Rooms you visit will appear here.</p> }
+        else {
+            <div class="room-grid">@foreach (var room in Model.RecentRooms) { <partial name="_RoomCard" model="room" /> }</div>
+            <p class="room-empty d-none" data-no-matches role="status">No matching rooms.</p>
+        }
+    </section>
+    <section class="room-section" aria-labelledby="open-rooms-heading" data-room-section>
+        <div class="room-section-heading"><h2 id="open-rooms-heading">Open Rooms</h2></div>
+        @if (Model.OpenRooms.Count == 0) { <p class="room-empty">No open rooms yet.</p> }
+        else {
+            <div class="room-grid">@foreach (var room in Model.OpenRooms) { <partial name="_RoomCard" model="room" /> }</div>
+            <p class="room-empty d-none" data-no-matches role="status">No matching rooms.</p>
+        }
+    </section>
+</div>
+@section Scripts {
+    <script src="~/js/room-search.js" asp-append-version="true"></script>
 }
-<section>
-    <h1>Chat rooms</h1>
-    <p>Start a conversation. Each room lasts 24 hours.</p>
-
-    <form method="post" class="mb-4">
-        <label asp-for="RoomName" class="form-label">Room name</label>
-
-        <div class="d-flex gap-2">
-            <input asp-for="RoomName" class="form-control" maxlength="80"
-                   placeholder="What would you like to talk about?" />
-
-            <button type="submit" class="btn btn-primary">
-                Create room
-            </button>
-        </div>
-
-        <span asp-validation-for="RoomName" class="text-danger"></span>
-    </form>
-
-    @if (Model.Rooms.Count == 0)
-    {
-        <p>No active rooms yet. Create the first one!</p>
-    }
-    else
-    {
-        <div class="list-group">
-            @foreach (var room in Model.Rooms)
-            {
-                <a asp-page="/Chat" asp-route-roomId="@room.Id" class="list-group-item list-group-item-action">
-                    <strong>@room.Name</strong>
-                    <small class="d-block text-muted">
-                        Expires @room.ExpiresAt.ToString("yyyy-MM-dd HH:mm 'UTC'")
-                    </small>
-                </a>
-            }
-        </div>
-    }

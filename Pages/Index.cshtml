@@ -1,46 +1,40 @@
-﻿@page
+@page
 @model IndexModel
-@{
-    ViewData["Title"] = "Chat rooms";
-}
-<section>
-<h1>Chat rooms</h1>
-<p>Start a conversation. Each room lasts 24 hours.</p>
-
-<form method="post" class="mb-4">
-    <label asp-for="RoomName" class="form-label">Room name</label>
-
-    <div class="d-flex gap-2">
-        <input asp-for="RoomName"
-               class="form-control"
-               maxlength="80"
-               placeholder="What would you like to talk about?" />
-
-        <button type="submit" class="btn btn-primary">
-            Create room
-        </button>
-    </div>
-
-    <span asp-validation-for="RoomName" class="text-danger"></span>
-</form>
-
-@if (Model.Rooms.Count == 0)
+@{ ViewData["Title"] = User.Identity?.IsAuthenticated == true ? "Home" : "Welcome"; }
+@if (User.Identity?.IsAuthenticated != true)
 {
-    <p>No active rooms yet. Create the first one!</p>
+    <section class="welcome-panel">
+        <div>
+            <p class="room-eyebrow">A little space to talk</p>
+            <h1>Welcome to Chats24h</h1>
+            <p>Chat rooms that last 24 hours, and then they are gone forever.</p>
+            <p>Log in or register to begin.</p>
+            <div class="d-flex flex-wrap gap-2 mt-4">
+                <a class="btn btn-primary" asp-area="Identity" asp-page="/Account/Register">Register</a>
+                <a class="btn btn-secondary" asp-area="Identity" asp-page="/Account/Login">Log in</a>
+            </div>
+        </div>
+    </section>
 }
 else
 {
-    <div class="list-group">
-        @foreach (var room in Model.Rooms)
-        {
-            <a asp-page="/Chat"
-               asp-route-roomId="@room.Id"
-               class="list-group-item list-group-item-action">
-                <strong>@room.Name</strong>
-                <small class="d-block text-muted">
-                    Expires @room.ExpiresAt.ToString("yyyy-MM-dd HH:mm 'UTC'")
-                </small>
-            </a>
-        }
+    <div class="room-page">
+        <h1>Home</h1>
+        <p class="room-page-intro">Your conversations, all in one place.</p>
+        <section class="room-section" aria-labelledby="my-rooms-heading">
+            <div class="room-section-heading"><h2 id="my-rooms-heading">My Rooms</h2><a asp-page="/MyRooms">View all</a></div>
+            @if (Model.MyRooms.Count == 0) { <p class="room-empty">You haven't created a room yet.</p> }
+            else { <div class="room-grid">@foreach (var room in Model.MyRooms) { <partial name="_RoomCard" model="room" /> }</div> }
+        </section>
+        <section class="room-section" aria-labelledby="recent-rooms-heading">
+            <div class="room-section-heading"><h2 id="recent-rooms-heading">Recent Rooms</h2></div>
+            @if (Model.RecentRooms.Count == 0) { <p class="room-empty">Rooms you visit will appear here.</p> }
+            else { <div class="room-grid">@foreach (var room in Model.RecentRooms) { <partial name="_RoomCard" model="room" /> }</div> }
+        </section>
+        <section class="room-section" aria-labelledby="open-rooms-heading">
+            <div class="room-section-heading"><h2 id="open-rooms-heading">Open Rooms</h2><a asp-page="/Join">View all</a></div>
+            @if (Model.OpenRooms.Count == 0) { <p class="room-empty">No open rooms yet.</p> }
+            else { <div class="room-grid">@foreach (var room in Model.OpenRooms) { <partial name="_RoomCard" model="room" /> }</div> }
+        </section>
     </div>
 }
