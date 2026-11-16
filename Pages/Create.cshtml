@@ -1,30 +1,47 @@
-﻿@page
+@page
 @model CreateModel
 @{
     ViewData["Title"] = "Create a Room";
 }
 
-<h1>@ViewData["Title"]</h1>
+<div class="room-page">
+    <section class="room-section create-room-panel">
+        <h1>Create a room</h1>
+        <p class="room-page-intro">Your room will be open for 24 hours.</p>
 
-<form method="post" class="mb-4">
-    <div>
-    <label asp-for="RoomName" class="form-label">Room name</label>
-        <input asp-for="RoomName"
-               class="form-control"
-               maxlength="80"
-               placeholder="Enter the Room's Name" />
-    </div>
-    <div class="my-4">
-    <label asp-for="RoomDesc" class="form-label">Room Description</label>
-        <input asp-for="RoomDesc"
-               class="form-control"
-               maxlength="160"
-               placeholder="Enter the Room's Description" />
-    </div>
-        <button type="submit" class="btn btn-primary">
-            Create room
-        </button>
-    
+        <form method="post">
+            <div class="mb-3">
+                <label asp-for="RoomName" class="form-label">Room name <span aria-hidden="true">*</span></label>
+                <input asp-for="RoomName" class="form-control" maxlength="80"
+                       placeholder="Enter the name of your room" required />
+                <span asp-validation-for="RoomName" class="text-danger"></span>
+            </div>
 
-    <span asp-validation-for="RoomName" class="text-danger"></span>
-</form>
+            <div class="mb-3">
+                <label asp-for="RoomDesc" class="form-label">Description</label>
+                <textarea asp-for="RoomDesc" class="form-control" maxlength="160" rows="4"
+                          placeholder="Enter the description of your room"></textarea>
+                <span asp-validation-for="RoomDesc" class="text-danger"></span>
+            </div>
+
+            <div class="mb-4">
+                <label for="room-theme" class="form-label">Theme</label>
+                <div class="create-room-theme">
+                    <div>
+                        <select id="room-theme" class="form-select" disabled aria-describedby="theme-help">
+                            <option>Default</option>
+                        </select>
+                        <small id="theme-help" class="text-muted">More themes coming soon.</small>
+                    </div>
+                    <div class="theme-preview" aria-label="Theme preview placeholder">Preview image</div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Create Room</button>
+        </form>
+    </section>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

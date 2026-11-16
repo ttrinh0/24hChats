@@ -59,6 +59,18 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
         {
             return Forbid();
         }
+        var membership = await db.ChatMembers.FindAsync(user.Id, room.Id);
+        if (membership is null)
+        {
+            membership = new ChatMember { UserId = user.Id, RoomId = room.Id, JoinedAt = now };
+            db.ChatMembers.Add(membership);
+            room.ChatMembers.Add(new ChatMember { UserId = user.Id, RoomId = room.Id, ChatUser = user });
+        }
+        else
+        {
+            membership.JoinedAt = now;
+        }
+        await db.SaveChangesAsync();
         Room = room;
         ChatUserId = user.Id;
         Messages = messages;

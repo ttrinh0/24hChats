@@ -74,3 +74,46 @@ body {
 .dropdown-item:hover {
   background-color: var(--bs-body-bg);
 }
+
+/*Stlyes from https://bootswatch.com/brite/ used for room cards*/
+.app-shell { display: flex; min-height: 100vh; }
+.app-sidebar { flex: 0 0 280px; position: sticky; top: 0; align-self: flex-start; height: 100vh; height: 100dvh; }
+.app-nav { width: 280px; min-height: 0; overflow-y: auto; }
+.app-content { flex: 1; min-width: 0; padding: 2.5rem clamp(1.25rem, 5vw, 4.5rem); }
+.room-page { max-width: 1050px; margin: 0 auto; }
+.room-page h1, .welcome-panel h1 { font-weight: 700; }
+.room-page-intro { color: #626b76; margin-bottom: 2rem; }
+.page-title-row, .room-section-heading { display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+.room-section { background: #f5f6f8; border: 1px solid #e4e7eb; border-radius: .5rem; padding: 1.5rem; margin-bottom: 1.25rem; }
+.room-section-heading { margin-bottom: 1rem; }
+.room-section-heading h2 { margin: 0; font-size: 1.1rem; font-weight: 700; }
+.room-section-heading a { font-size: .875rem; }
+.room-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 190px), 1fr)); gap: 1rem; }
+.room-card { overflow: hidden; color: inherit; border: 1px solid #d8dfe7; transition: box-shadow .15s, transform .15s; }
+.room-card:hover, .room-card:focus-visible { color: inherit; box-shadow: 0 .35rem 1rem #273b5624; transform: translateY(-2px); }
+.room-card-banner { min-height: 95px; background: #91add0; display: flex; align-items: flex-start; justify-content: flex-end; padding: .6rem; }
+.room-card-time { color: #263d59; background: #ffffffd9; border-radius: 1rem; padding: .2rem .55rem; font-size: .75rem; font-weight: 600; }
+.room-card-body { padding: .9rem 1rem; background: white; }
+.room-card-title { font-size: 1rem; font-weight: 700; overflow-wrap: anywhere; margin: 0 0 .25rem; }
+.room-card-owner { color: #626b76; font-size: .8rem; margin: 0; overflow-wrap: anywhere; }
+.room-empty { margin: 0; padding: 1.2rem; color: #626b76; background: #fff; border-radius: .35rem; }
+.welcome-panel { min-height: calc(100vh - 5rem); max-width: 1050px; margin: auto; padding: clamp(2rem, 8vw, 6rem); display: flex; align-items: center; background: #f1f3f6; border-radius: .5rem; }
+.welcome-panel > div { max-width: 490px; }
+.welcome-panel h1 { margin-bottom: 1rem; }
+.room-eyebrow { color: #536f98; font-size: .8rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 700; }
+.create-room-panel { max-width: 650px; padding: clamp(1.5rem, 4vw, 2.5rem); }
+.create-room-panel h1 { margin-bottom: .5rem; }
+.create-room-theme { display: flex; flex-wrap: wrap; align-items: flex-start; gap: 1rem; }
+.create-room-theme select { min-width: 160px; }
+.theme-preview { display: grid; place-items: center; width: 150px; height: 100px; background: #e3e6ea; color: #626b76; border-radius: .35rem; font-size: .875rem; }
+.create-success { padding-top: 2rem; }
+@media (max-width: 767px) {
+  .app-shell { flex-direction: column; }
+  .app-sidebar { flex-basis: auto; position: static; align-self: stretch; height: auto; }
+  .app-nav { width: 100%; min-height: 0; height: auto !important; overflow: visible; border-right: 0 !important; border-bottom: 1px solid #dee2e6; }
+  .app-nav .nav { flex-direction: row !important; flex-wrap: wrap; }
+  .app-nav hr { margin: .5rem 0; }
+  .app-content { padding: 1.5rem 1rem; }
+  .welcome-panel { min-height: calc(100vh - 3rem); }
+  .page-title-row { align-items: flex-start; flex-wrap: wrap; margin-bottom: 1.25rem; }
+}

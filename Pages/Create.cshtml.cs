@@ -5,29 +5,20 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 
 namespace Chats24h.Pages;
 
 [Authorize]
 public class CreateModel(ApplicationDbContext db, UserManager<ChatUser> userManager) : PageModel
 {
-    public List<ChatRoom> Rooms { get; private set; } = [];
-
     [BindProperty]
     [Required(ErrorMessage = "Enter a room name.")]
     [StringLength(80)]
     public string RoomName { get; set; } = "";
     [BindProperty]
     [StringLength(160)]
-    public string RoomDesc { get; set; } = "";
+    public string? RoomDesc { get; set; }
     private readonly UserManager<ChatUser> _userManager = userManager;
-
-    public async Task OnGetAsync() // 'Task' type is somewhat like Promise in .js
-    {
-        await LoadRoomsAsync();
-    }
 
     public async Task<IActionResult> OnPostAsync()
     {
@@ -48,7 +39,6 @@ public class CreateModel(ApplicationDbContext db, UserManager<ChatUser> userMana
 
         if (!ModelState.IsValid)
         {
-            await LoadRoomsAsync();
             return Page();
         }
 
@@ -68,25 +58,8 @@ public class CreateModel(ApplicationDbContext db, UserManager<ChatUser> userMana
             RoomId = room.Id,
         };
         room.ChatMembers.Add(chatMember);
-        if (ModelState.IsValid)
-        {
-
-            await db.ChatRooms.AddAsync(room);
-            await db.ChatMembers.AddAsync(chatMember);
-            await db.SaveChangesAsync();
-        }
-
-        return RedirectToPage("/Chat", new { roomId = room.Id });
-    }
-
-    private async Task LoadRoomsAsync()
-    {
-        var now = DateTimeOffset.UtcNow;
-
-        Rooms = await db.ChatRooms
-            .AsNoTracking()
-            .Where(room => room.ExpiresAt > now)
-            .OrderByDescending(room => room.CreatedAt)
-            .ToListAsync();
+        db.ChatRooms.Add(room);
+        await db.SaveChangesAsync();
+        return RedirectToPage("/CreateSuccess", new { roomId = room.Id });
     }
 }

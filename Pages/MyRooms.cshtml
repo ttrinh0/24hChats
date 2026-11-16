@@ -1,46 +1,11 @@
-﻿@page
-@model IndexModel
-@{
-    ViewData["Title"] = "Chat rooms";
-}
-<section>
-<h1>Chat rooms</h1>
-<p>Start a conversation. Each room lasts 24 hours.</p>
-
-<form method="post" class="mb-4">
-    <label asp-for="RoomName" class="form-label">Room name</label>
-
-    <div class="d-flex gap-2">
-        <input asp-for="RoomName"
-               class="form-control"
-               maxlength="80"
-               placeholder="What would you like to talk about?" />
-
-        <button type="submit" class="btn btn-primary">
-            Create room
-        </button>
-    </div>
-
-    <span asp-validation-for="RoomName" class="text-danger"></span>
-</form>
-
-@if (Model.Rooms.Count == 0)
-{
-    <p>No active rooms yet. Create the first one!</p>
-}
-else
-{
-    <div class="list-group">
-        @foreach (var room in Model.Rooms)
-        {
-            <a asp-page="/Chat"
-               asp-route-roomId="@room.Id"
-               class="list-group-item list-group-item-action">
-                <strong>@room.Name</strong>
-                <small class="d-block text-muted">
-                    Expires @room.ExpiresAt.ToString("yyyy-MM-dd HH:mm 'UTC'")
-                </small>
-            </a>
-        }
-    </div>
-}
+@page
+@model MyRoomsModel
+@{ ViewData["Title"] = "My Rooms"; }
+<div class="room-page">
+    <div class="page-title-row"><div><h1>My Rooms</h1><p class="room-page-intro">Rooms you've created that are still open.</p></div></div>
+    <section class="room-section" aria-labelledby="my-rooms-heading">
+        <div class="room-section-heading"><h2 id="my-rooms-heading">My Rooms</h2></div>
+        @if (Model.Rooms.Count == 0) { <p class="room-empty">You haven't created a room yet.</p> }
+        else { <div class="room-grid">@foreach (var room in Model.Rooms) { <partial name="_RoomCard" model="room" /> }</div> }
+    </section>
+</div>

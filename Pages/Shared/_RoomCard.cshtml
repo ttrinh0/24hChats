@@ -1,0 +1,15 @@
+@model Chats24h.Models.ChatRoom
+@{
+    var remaining = Model.ExpiresAt - DateTimeOffset.UtcNow;
+    var timeLeft = remaining.TotalHours >= 1
+        ? $"{Math.Ceiling(remaining.TotalHours):0}h left"
+        : $"{Math.Max(1, Math.Ceiling(remaining.TotalMinutes)):0}m left";
+}
+<a asp-page="/Chat" asp-route-roomId="@Model.Id" class="card room-card text-decoration-none"
+   data-room-name="@Model.Name" data-room-description="@Model.Description">
+    <div class="room-card-banner"><span class="room-card-time">@timeLeft</span></div>
+    <div class="card-body room-card-body">
+        <h3 class="room-card-title">@Model.Name</h3>
+        <p class="room-card-owner">Owner: @(Model.Owner?.Nickname ?? "Unknown")</p>
+    </div>
+</a>

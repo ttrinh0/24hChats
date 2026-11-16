@@ -1,0 +1,18 @@
+@page "{roomId:guid}"
+@model CreateSuccessModel
+@{
+    ViewData["Title"] = "Room Created";
+    var chatUrl = Url.Page("/Chat", new { roomId = Model.Room.Id });
+}
+<div class="room-page create-success">
+    <h1>Room Created!</h1>
+    <p><strong>@Model.Room.Name</strong> has been created.<br />
+        This room is open until <time datetime="@Model.Room.ExpiresAt.ToString("O")">@Model.Room.ExpiresAt.ToString("MMM d, yyyy 'at' HH:mm 'UTC'")</time>.
+    </p>
+    <p>Redirecting to your room… <a href="@chatUrl">Go to the room now</a></p>
+</div>
+@section Scripts {
+    <script>
+        window.setTimeout(() => window.location.assign(@Html.Raw(System.Text.Json.JsonSerializer.Serialize(chatUrl))), 3000);
+    </script>
+}
