@@ -15,10 +15,10 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
     [BindProperty]
     [Required(ErrorMessage = "Enter a room name.")]
     [StringLength(80)]
-    public string RoomName { get; set; } = "";
+    public string RoomName { get; set; } = null!;
     [BindProperty]
     [StringLength(160)]
-    public string RoomDesc { get; set; } = "";
+    public string RoomDesc { get; set; } = null!;
     public ChatRoom Room { get; private set; } = null!;
     public string ChatUserId { get; private set; } = null!;
     public string ChatUserColour { get; private set; } = null!;
@@ -71,6 +71,8 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
             membership.JoinedAt = now;
         }
         await db.SaveChangesAsync();
+        RoomName = room.Name;
+        RoomDesc = room.Description;
         Room = room;
         ChatUserId = user.Id;
         Messages = messages;
@@ -78,19 +80,15 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
         return Page();
     }
 
-    public async Task<IActionResult> OnPostEditAsync()
+    public async Task<IActionResult> OnPostEditAsync(Guid? roomId)
     {
-
-        RoomName = RoomName?.Trim() ?? "";
-        RoomDesc = RoomDesc?.Trim() ?? "";
-        Console.WriteLine($"\n\n1{RoomName}1\n\n");
         var currentUser = await _userManager.GetUserAsync(User);
-
-        if (currentUser == null)
+        var room = await db.ChatRooms.FindAsync(roomId);
+        if (currentUser == null || room == null)
         {
             return NotFound();
         }
-        // if (currentUser != chatRoom.)
+        Console.WriteLine($"\n\n1{RoomName}1\n\n");
 
         if (string.IsNullOrWhiteSpace(RoomName))
         {
@@ -98,31 +96,14 @@ public class ChatModel(ApplicationDbContext db, UserManager<ChatUser> userManage
                 nameof(RoomName), "Enter a room name.");
         }
 
-
-        var now = DateTimeOffset.UtcNow;
-
-        var room = new ChatRoom
-        {
-            Name = RoomName,
-            Description = RoomDesc,
-            OwnerId = currentUser.Id,
-            CreatedAt = now,
-            ExpiresAt = now.AddHours(24)
-        };
-        var chatMember = new ChatMember
-        {
-            UserId = currentUser.Id,
-            RoomId = room.Id,
-        };
-        room.ChatMembers.Add(chatMember);
         if (ModelState.IsValid)
         {
+            room.Name = RoomName;
+            room.Description = RoomDesc;
+            db.ChatRooms.Update(room);
 
-            await db.ChatRooms.AddAsync(room);
-            await db.ChatMembers.AddAsync(chatMember);
             await db.SaveChangesAsync();
         }
-
         return RedirectToPage();
     }
 

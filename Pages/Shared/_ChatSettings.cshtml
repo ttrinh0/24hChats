@@ -13,6 +13,7 @@
     <div class="modal-dialog modal-dialog-centered my-0" role="document">
         <div class="modal-content">
             <form method="post" asp-page-handler="Edit">
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
                 <div class="modal-header">
                     <h5 class="modal-title">Chatroom Settings</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close">
@@ -22,13 +23,25 @@
                 <div class="modal-body">
                     <div>
                         <label asp-for="RoomName" class="form-label">Chatroom Name</label>
-                        <input type="name" class="form-control" value="@Model.Room.Name"
+                        <input asp-for="RoomName" type="name" class="form-control" value="@Model.Room.Name"
                                placeholder="Enter Chatroom Name">
                     </div>
                     <div class="my-2">
                         <label asp-for="RoomDesc" class="form-label">Chatroom Description</label>
-                        <input type="name" class="form-control" value="@Model.Room.Description"
+                        <input asp-for="RoomDesc" type="name" class="form-control" value="@Model.Room.Description"
                                placeholder="Enter Chatroom Description">
+                    </div>
+                    <div class="mb-4">
+                        <label for="room-theme" class="form-label">Theme</label>
+                        <div class="create-room-theme">
+                            <div>
+                                <select id="room-theme" class="form-select" disabled aria-describedby="theme-help">
+                                    <option>Default</option>
+                                </select>
+                                <small id="theme-help" class="text-muted">More themes coming soon.</small>
+                            </div>
+                            <div class="theme-preview" aria-label="Theme preview placeholder">Preview image</div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
